@@ -8,15 +8,15 @@ jobs:
       - name: Create New User and Enable RDP
         shell: pwsh
         run: |
-          $Password = ConvertTo-SecureString "Password123" -AsPlainText -Force
-          New-LocalUser -Name "Administrator" -Password $Password -FullName "Full Name" -Description "Description"
-          
-          Add-LocalGroupMember -Group "Administrators" -Member "Administrator"
-          
+          $Password = ConvertTo-SecureString "123qwe!@#QWE" -AsPlainText -Force
+          New-LocalUser -Name "mishuka" -Password $Password -FullName "Full Name" -Description "Description"
+
+          Add-LocalGroupMember -Group "Administrators" -Member "mishuka"
+
           Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0
-          
+
           Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
-          
+
           Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" -Name "UserAuthentication" -Value 1
 
       - name: Checkout Code
@@ -38,8 +38,6 @@ jobs:
         run: Start-Sleep -Seconds 5
 
       - name: Authenticate Ngrok
-        env:
-          NGROK_AUTHTOKEN: ${{ secrets.NGROK_AUTHTOKEN }}
         run: ngrok config add-authtoken 2pA1P07jrsAn5HnHClfiKk3yvrp_2kjUxtciau7P5G56yH5gR
 
       - name: Run Ngrok with Debugging
